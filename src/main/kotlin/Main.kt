@@ -14,9 +14,9 @@ val cycle = 54.33
 fun main(args: Array<String>) {
     println("Payslip Printer")
     println(getFullName())
-    paySlipPrinter()
+    getPaySlip()
 }
-fun paySlipPrinter() {
+fun getPaySlip() {
 
     val mSalary = (gSalary/12)
     val paye = mSalary*(payePercent/100)
