@@ -11,18 +11,71 @@ val payePercent = 38.5
 val prsiPercent = 5.2
 val bonus = 1450.50
 val cycle = 54.33
-fun main(args: Array<String>) {
-    println("Payslip Printer")
-    println(getFullName())
-    getPaySlip()
+fun menu() : Int {
+    print("""
+         Employee Menu for ${getFullName()}
+           1. Monthly Salary
+           2. Monthly PRSI
+           3. Monthly PAYE
+           4. Monthly Gross Pay
+           5. Monthly Total Deductions
+           6. Monthly Net Pay
+           7. Full Payslip
+          -1. Exit
+         Enter Option : """)
+    return readln().toInt()
 }
+fun main(args: Array<String>){
+
+    var input : Int
+
+    do {
+        input = menu()
+        when(input) {
+            1 -> println("Monthly Salary: ${getMonthlySalary()}")
+            2 -> println("Monthly PRSI: ${getMonthlyPRSI()}")
+            3 ->println("Monthly PAYE: ${getMonthlyPaye()}")
+            4 -> println("Monthly Gross Pay: ${getGrossMonthlyPay()}")
+            5 -> println("Monthly Total Deductions: ${getTotalMonthlyDeductions()}")
+            6 -> println("Monthly Net Pay: ${getNetMonthlyPay()}")
+            7 -> println(getPaySlip())
+            -1 -> println("Exiting App")
+            else -> println("Invalid Option")
+        }
+        println()
+    } while (input != -1)
+}
+
+fun getMonthlySalary(): Double {
+    return gSalary / 12
+}
+
+fun getMonthlyPRSI(): Double {
+    return getMonthlySalary() * (prsiPercent / 100)
+}
+
+fun getMonthlyPaye(): Double {
+    return getMonthlySalary() * (payePercent / 100)
+}
+
+fun getGrossMonthlyPay(): Double {
+    return getMonthlySalary() + (bonus / 12)
+}
+
+fun getTotalMonthlyDeductions(): Double {
+    return getMonthlyPRSI() + getMonthlyPaye() + cycle
+}
+
+fun getNetMonthlyPay(): Double {
+    return getGrossMonthlyPay() - getTotalMonthlyDeductions()
+}
+
 fun getPaySlip() {
 
-    val mSalary = (gSalary/12)
-    val paye = mSalary*(payePercent/100)
-    val prsi = mSalary*(prsiPercent/100)
-    val tDecu = (paye + prsi +cycle)
-    val grSalary = (mSalary +(bonus/12))
+    val monthlySalary = getMonthlySalary()
+    val paye = getMonthlyPaye()
+    val prsi = monthlySalary*(prsiPercent/100)
+    val grSalary = (monthlySalary +(bonus/12))
     val tdecu= (paye+prsi+cycle)
     val npay = (grSalary-tdecu)
 
@@ -39,7 +92,7 @@ fun getPaySlip() {
     |  Payment Details:                            Deduction details        
     |                                                                         
     |-------------------------------------------------------------------------
-    |Salary: ${roundTwoDecimals(mSalary)}                         PayE: ${roundTwoDecimals(paye)}       
+    |Salary: ${roundTwoDecimals(monthlySalary)}                         PayE: ${roundTwoDecimals(paye)}       
     | Bonus: ${bonus}                       Prsi: ${roundTwoDecimals(paye)}      
     |                                                                        
     |-------------------------------------------------------------------------
